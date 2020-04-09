@@ -1,0 +1,52 @@
+﻿@page
+@model SimpleBlog.Areas.Admin.Pages.IndexModel;
+@{
+	ViewData["Title"] = "Admin";
+}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4">
+				<h1>Previous Posts</h1>
+			</div>
+			<div class="col-md-8">
+				<h1>Create new</h1>
+			</div>
+			<div class="w-100"><hr /></div>
+		</div>
+		<div class="row">
+
+			<div class="col-md-4">
+
+				@foreach (var post in Model.PreviousPosts)
+				{
+					<h3>@post.Title</h3>
+					<p>@post.Content</p>
+				}
+			</div>
+			<div class="col-md-8">
+				<form method="post">
+					<div class="form-group">
+						<label asp-for="Post.Title"></label>
+						<input class="form-control" asp-for="Post.Title" placeholder="Title">
+						<span asp-validation-for="Post.Title"></span>
+					</div>
+
+					<div class="form-group">
+						<label asp-for="Post.Content"></label>
+						<textarea class="form-control" asp-for="Post.Content" rows="8"></textarea>
+						<span asp-validation-for="Post.Content"></span>
+					</div>
+
+					<div class="form-group">
+						<input class="form-control" asp-for="Post.Tags" />
+					</div>
+					<div class="form-group">
+						<input type="submit" value="Submit" />
+					</div>
+				</form>
+			</div>
+
+
+
+		</div>
+	</div>
