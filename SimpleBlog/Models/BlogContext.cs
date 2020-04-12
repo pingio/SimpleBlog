@@ -22,7 +22,7 @@ namespace SimpleBlog.Models
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<Tag>()
-				.HasKey(p => new { p.PostId, p.TagName });
+				.HasKey(t => new { t.PostId, t.TagName });
 		}
 	}
 }

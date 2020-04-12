@@ -15,6 +15,9 @@ namespace SimpleBlog.Models
 		
 		public string TagName { get; set; }
 
+		[ForeignKey("PostId")]
+		public Post Post { get; set; }
+
 
 	}
 }

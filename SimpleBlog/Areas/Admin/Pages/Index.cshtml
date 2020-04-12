@@ -3,7 +3,6 @@
 @{
 	ViewData["Title"] = "Admin";
 }
-	<div class="container">
 		<div class="row">
 			<div class="col-md-4">
 				<h1>Previous Posts</h1>
@@ -21,32 +20,41 @@
 				{
 					<h3>@post.Title</h3>
 					<p>@post.Content</p>
+					<p>
+						@foreach(var tag in post.Tags)
+						{
+							<a asp-area="Admin" asp-page="Posts" asp-route-tag="@tag.TagName" class="badge badge-info">@tag.TagName</a>
+						}
+					</p>
+					
 				}
 			</div>
 			<div class="col-md-8">
 				<form method="post">
 					<div class="form-group">
 						<label asp-for="Post.Title"></label>
-						<input class="form-control" asp-for="Post.Title" placeholder="Title">
+						<input class="form-control bg-dark text-white" asp-for="Post.Title" placeholder="Title">
 						<span asp-validation-for="Post.Title"></span>
 					</div>
 
 					<div class="form-group">
 						<label asp-for="Post.Content"></label>
-						<textarea class="form-control" asp-for="Post.Content" rows="8"></textarea>
+						<textarea class="form-control bg-dark text-white" asp-for="Post.Content" rows="8"></textarea>
 						<span asp-validation-for="Post.Content"></span>
 					</div>
 
 					<div class="form-group">
-						<input class="form-control" asp-for="Post.Tags" />
+						<label asp-for="Post.Tags"></label>
+						<input class="form-control bg-dark text-white" asp-for="TagString" />
 					</div>
 					<div class="form-group">
-						<input type="submit" value="Submit" />
+						<input type="submit" class="btn btn-success" value="Submit" />
 					</div>
 				</form>
 			</div>
 
 
 
+
+
 		</div>
-	</div>
