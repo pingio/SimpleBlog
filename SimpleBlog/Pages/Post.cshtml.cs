@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using SimpleBlog.Models;
 
 namespace SimpleBlog.Pages
@@ -14,7 +15,7 @@ namespace SimpleBlog.Pages
         public void OnGet(int id)
         {
             using var context = new BlogContext();
-            Post = context.Posts.FirstOrDefault(post => post.PostId == id);
+            Post = context.Posts.Include(post => post.Tags).FirstOrDefault(post => post.PostId == id);
 
         }
     }

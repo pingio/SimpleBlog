@@ -15,12 +15,13 @@ namespace SimpleBlog.Models
 
 		protected override void OnConfiguring(DbContextOptionsBuilder options)
 		{
-			options.UseInMemoryDatabase(databaseName: "SimpleBlog");
+			options.UseInMemoryDatabase(databaseName: "SimpleBlog"); //This is only for testing purposes. Will change to SQLServer/MySQL.
 		}
 
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			// Creates a primary key: (PostID, TagName) for the Tag table.
 			modelBuilder.Entity<Tag>()
 				.HasKey(t => new { t.PostId, t.TagName });
 		}

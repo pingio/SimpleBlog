@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SimpleBlog.Models;
 
@@ -25,7 +26,7 @@ namespace SimpleBlog.Pages
 		public void OnGet()
 		{
 			using var context = new BlogContext();
-			PreviousPosts = context.Posts.ToList();
+			PreviousPosts = context.Posts.Include(post => post.Tags).ToList();
 
 		}
 	}
