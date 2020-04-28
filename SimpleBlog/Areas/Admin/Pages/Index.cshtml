@@ -1,61 +1,63 @@
-﻿@page
+﻿@page "{handler?}"
 @model SimpleBlog.Areas.Admin.Pages.IndexModel;
 @{
 	ViewData["Title"] = "Admin";
 }
-		<div class="row">
-			<div class="col-md-4">
-				<h1>Previous Posts</h1>
-			</div>
-			<div class="col-md-8">
-				<h1>Create new</h1>
-			</div>
-			<div class="w-100"><hr /></div>
-		</div>
-		<div class="row">
-			<!-- Previous Posts -->
-			<div class="col-md-4">
+<div class="row">
+	<div class="col-md-4">
+		<h1>Previous Posts</h1>
+	</div>
+	<div class="col-md-8">
+		<h1>Create new</h1>
+	</div>
+	<div class="w-100"><hr /></div>
+</div>
+<div class="row">
+	<!-- Previous Posts -->
+	<div class="col-md-4">
+		<form asp-page-handler="delete" method="post">
+			<button class="btn btn-danger">Delete database</button>
+		</form>
 
-				@foreach (var post in Model.PreviousPosts)
+
+		@foreach (var post in Model.PreviousPosts)
+		{
+			<h3>@post.Title</h3>
+			<p>@post.Content</p>
+			<p>
+				@foreach (var tag in post.Tags)
 				{
-					<h3>@post.Title</h3>
-					<p>@post.Content</p>
-					<p>
-						@foreach(var tag in post.Tags)
-						{
-							<a asp-area="Admin" asp-page="Posts" asp-route-tag="@tag.TagName" class="badge badge-info">@tag.TagName</a>
-						}
-					</p>
-					
+					<a asp-area="Admin" asp-page="Posts" asp-route-tagstring="@tag.TagName" class="badge badge-info">@tag.TagName</a>
 				}
-			</div>
-			<!-- Write new post -->
-			<div class="col-md-8">
-				<form method="post">
-					<div class="form-group">
-						<label asp-for="Post.Title"></label>
-						<input class="form-control bg-dark text-white" asp-for="Post.Title" placeholder="Title">
-						<span asp-validation-for="Post.Title"></span>
-					</div>
+			</p>
 
-					<div class="form-group">
-						<label asp-for="Post.Content"></label>
-						<textarea class="form-control bg-dark text-white" asp-for="Post.Content" rows="8"></textarea>
-						<span asp-validation-for="Post.Content"></span>
-					</div>
-
-					<div class="form-group">
-						<label asp-for="Post.Tags"></label>
-						<input class="form-control bg-dark text-white" asp-for="TagString" />
-					</div>
-					<div class="form-group">
-						<input type="submit" class="btn btn-success" value="Submit" />
-					</div>
-				</form>
+		}
+	</div>
+	<!-- Write new post -->
+	<div class="col-md-8">
+		<form method="post">
+			<div class="form-group">
+				<label asp-for="Post.Title"></label>
+				<input class="form-control bg-dark text-white" asp-for="Post.Title" placeholder="Title">
+				<span asp-validation-for="Post.Title"></span>
 			</div>
 
+			<div class="form-group">
+				<label asp-for="Post.Content"></label>
+				<textarea class="form-control bg-dark text-white" asp-for="Post.Content" rows="8"></textarea>
+				<span asp-validation-for="Post.Content"></span>
+			</div>
+
+			<div class="form-group">
+				<label asp-for="Post.Tags"></label>
+				<input class="form-control bg-dark text-white" asp-for="TagString" />
+			</div>
+			<div class="form-group">
+				<input type="submit" class="btn btn-success" value="Submit" />
+			</div>
+		</form>
+	</div>
 
 
 
-
-		</div>
+</div>

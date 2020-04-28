@@ -19,12 +19,12 @@ namespace SimpleBlog.Models
 		[Required]
 		[Display(Name = "Post")]
 		public string Content { get; set; }
-
+	
 		[Display(Name = "Cover Image")]
 		public string CoverImage { get; set; }
 
-		[Timestamp]
-		public DateTime Posted { get; set; }
+		
+		public DateTime Posted { get; set; } = DateTime.Now;
 
 		[Display(Name = "Tags", Description = "Separated by comma.")]
 		public List<Tag> Tags { get; set; }
