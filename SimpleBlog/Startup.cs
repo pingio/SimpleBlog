@@ -27,6 +27,8 @@ namespace SimpleBlog
 		{
 			services.AddRazorPages().AddRazorRuntimeCompilation();
 			services.AddDbContext<BlogContext>();
+			services.AddDefaultIdentity<SimpleUser>(options => options.SignIn.RequireConfirmedAccount = true)
+				   .AddEntityFrameworkStores<BlogContext>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +49,7 @@ namespace SimpleBlog
 			app.UseStaticFiles();
 
 			app.UseRouting();
-
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>

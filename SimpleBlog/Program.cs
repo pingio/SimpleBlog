@@ -30,6 +30,7 @@ namespace SimpleBlog
                 {
                     var context = services.GetRequiredService<BlogContext>();
                     context.Database.EnsureCreated();
+                    
                 }
                 catch (Exception ex)
                 {

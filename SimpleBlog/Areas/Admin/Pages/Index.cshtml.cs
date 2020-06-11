@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using SimpleBlog.Models;
 
@@ -13,7 +15,13 @@ namespace SimpleBlog.Areas.Admin.Pages
 {
     public class IndexModel : PageModel
     {
+        private readonly IConfiguration _config;
+        private readonly SignInManager<SimpleUser> _signin;
 
+        public IndexModel(IConfiguration config, SignInManager<SimpleUser> signin) {
+            _config = config;
+            _signin = signin;
+        }
 
         [BindProperty]
         public Post Post { get; set; }
@@ -30,10 +38,17 @@ namespace SimpleBlog.Areas.Admin.Pages
         /// <summary>
         /// OnGet, Load all the blog posts and their associated tags.
         /// </summary>
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            using var context = new BlogContext();
+			if (!_signin.IsSignedIn(User))
+			{
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+			}
+
+            using var context = new BlogContext(_config);
             PreviousPosts = context.Posts.Include(posts => posts.Tags).ToList();
+
+            return Page();
         }
 
         /// <summary>
@@ -42,7 +57,7 @@ namespace SimpleBlog.Areas.Admin.Pages
         /// <returns>Returns the page to be loaded.</returns>
         public IActionResult OnPost()
         {
-            using var context = new BlogContext();
+            using var context = new BlogContext(_config);
             if (ModelState.IsValid)
             {
 
@@ -70,7 +85,7 @@ namespace SimpleBlog.Areas.Admin.Pages
     
         public IActionResult OnPostDelete()
         {
-            using var context = new SimpleBlog.Models.BlogContext();
+            using var context = new BlogContext(_config);
             context.Tags.RemoveRange(context.Tags);
             context.Posts.RemoveRange(context.Posts);
             context.SaveChangesAsync();
