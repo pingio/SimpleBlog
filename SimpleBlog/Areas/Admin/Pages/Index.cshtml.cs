@@ -45,26 +45,41 @@ namespace SimpleBlog.Areas.Admin.Pages
             using var context = new BlogContext();
             if (ModelState.IsValid)
             {
-                
-                var post = Post;
-                post.Posted = DateTime.Now;
 
+                var post = Post;
                 var tags = new List<Tag>();
-                foreach (var tagString in TagString.Split(','))
+                
+
+                if (TagString != null)
                 {
-                    var tag = new Tag { TagName = tagString, PostId = post.PostId };
-                    tags.Add(tag);
+
+                    foreach (var tagString in TagString.Split(','))
+                        tags.Add(new Tag { TagName = tagString.Trim().Replace(" ", "-"), PostId = post.PostId });
                 }
 
                 post.Tags = tags;
 
-
-                context.Add(post);
+                post.Posted = DateTime.Now;
+                context.Posts.Add(post);
                 context.SaveChanges();
             }
+
             PreviousPosts = context.Posts.Include(posts => posts.Tags).ToList();
             return Page();
+        }
+    
+        public IActionResult OnPostDelete()
+        {
+            using var context = new SimpleBlog.Models.BlogContext();
+            context.Tags.RemoveRange(context.Tags);
+            context.Posts.RemoveRange(context.Posts);
+            context.SaveChangesAsync();
+
+
+            return RedirectToPage("./Index");
+
 
         }
     }
+
 }

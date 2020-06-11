@@ -23,8 +23,7 @@ namespace SimpleBlog.Models
 		[Display(Name = "Cover Image")]
 		public string CoverImage { get; set; }
 
-		[Timestamp]
-		public DateTime Posted { get; set; }
+		public DateTime Posted { get; set; } = DateTime.Now;
 
 		[Display(Name = "Tags", Description = "Separated by comma.")]
 		public List<Tag> Tags { get; set; }

@@ -1,4 +1,10 @@
-﻿@page "{tag?}"
+﻿@page "{tagstring?}"
 @model SimpleBlog.Areas.Admin.Pages.PostsModel
 @{
+}
+
+@foreach (var post in Model.Posts)
+{
+	<h1>@post.Title</h1>
+	<p>@post.Content</p>
 }
