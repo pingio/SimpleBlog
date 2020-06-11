@@ -15,8 +15,7 @@ namespace SimpleBlog.Models
 
 		protected override void OnConfiguring(DbContextOptionsBuilder options)
 		{
-			//options.UseInMemoryDatabase(databaseName: "SimpleBlog"); //This is only for testing purposes. Will change to SQLServer/MySQL.
-			options.UseSqlite("Data Source=blog.db");
+			options.UseInMemoryDatabase(databaseName: "SimpleBlog"); //This is only for testing purposes. Will change to SQLServer/MySQL.
 		}
 
 

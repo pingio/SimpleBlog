@@ -47,37 +47,23 @@ namespace SimpleBlog.Areas.Admin.Pages
             {
                 
                 var post = Post;
+                post.Posted = DateTime.Now;
 
                 var tags = new List<Tag>();
-                
-                if(TagString != null)
+                foreach (var tagString in TagString.Split(','))
                 {
-                    foreach (var tagString in TagString.Split(','))
-                        tags.Add(new Tag { TagName = tagString.Trim().Replace(" ", "-"), PostId = post.PostId });
+                    var tag = new Tag { TagName = tagString, PostId = post.PostId };
+                    tags.Add(tag);
                 }
 
                 post.Tags = tags;
-                post.Posted = DateTime.Now;
 
 
-                context.Posts.Add(post);
+                context.Add(post);
                 context.SaveChanges();
             }
             PreviousPosts = context.Posts.Include(posts => posts.Tags).ToList();
             return Page();
-
-        }
-
-        public IActionResult OnPostDelete()
-        {
-            using var context = new SimpleBlog.Models.BlogContext();
-            context.Tags.RemoveRange(context.Tags);
-            context.Posts.RemoveRange(context.Posts);
-            context.SaveChangesAsync();
-
-
-            return RedirectToPage("./Index");
-
 
         }
     }
