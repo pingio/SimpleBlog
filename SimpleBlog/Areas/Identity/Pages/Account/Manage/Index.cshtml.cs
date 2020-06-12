@@ -23,7 +23,7 @@ namespace SimpleBlog.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
-        public string Username { get; set; }
+        
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -33,6 +33,8 @@ namespace SimpleBlog.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
+            public string Username { get; set; }
+
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
@@ -43,10 +45,11 @@ namespace SimpleBlog.Areas.Identity.Pages.Account.Manage
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
-            Username = userName;
+            
 
             Input = new InputModel
             {
+                Username = userName,
                 PhoneNumber = phoneNumber
             };
         }
@@ -87,6 +90,16 @@ namespace SimpleBlog.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
+            var username = await _userManager.GetUserNameAsync(user);
+            if(Input.Username != username)
+			{
+                var usernameResult = await _userManager.SetUserNameAsync(user, Input.Username);
+				if (!usernameResult.Succeeded)
+				{
+                    StatusMessage = "Unexpected error when trying to set user name.";
+                    return RedirectToPage();
+                }
+			}
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";

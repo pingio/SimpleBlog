@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,12 @@ namespace SimpleBlog.Areas.Admin.Pages
     {
         private readonly IConfiguration _config;
         private readonly SignInManager<SimpleUser> _signin;
+        private readonly UserManager<SimpleUser> _user;
 
-        public IndexModel(IConfiguration config, SignInManager<SimpleUser> signin) {
+        public IndexModel(IConfiguration config, SignInManager<SimpleUser> signin, UserManager<SimpleUser> user) {
             _config = config;
             _signin = signin;
+            _user = user;
         }
 
         [BindProperty]
@@ -55,8 +58,14 @@ namespace SimpleBlog.Areas.Admin.Pages
         /// Checks if a new post is valid, if it is split the <see cref="TagString"/> into <seealso cref="Tag"/> for the post before committing changes.
         /// </summary>
         /// <returns>Returns the page to be loaded.</returns>
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
+         
+            if (!_signin.IsSignedIn(User))
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+
+            var user = await _user.GetUserAsync(User);
+
             using var context = new BlogContext(_config);
             if (ModelState.IsValid)
             {
@@ -75,6 +84,7 @@ namespace SimpleBlog.Areas.Admin.Pages
                 post.Tags = tags;
 
                 post.Posted = DateTime.Now;
+                post.PostedBy = await _user.GetUserNameAsync(user);
                 context.Posts.Add(post);
                 context.SaveChanges();
             }
@@ -83,15 +93,15 @@ namespace SimpleBlog.Areas.Admin.Pages
             return Page();
         }
     
-        public IActionResult OnPostDelete()
+        public async Task<IActionResult> OnPostDeleteAsync()
         {
             using var context = new BlogContext(_config);
             context.Tags.RemoveRange(context.Tags);
             context.Posts.RemoveRange(context.Posts);
-            context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Index");
 
 
         }

@@ -25,7 +25,11 @@ namespace SimpleBlog.Models
 
 		public DateTime Posted { get; set; } = DateTime.Now;
 
+		public string PostedBy { get; set; }
+
 		[Display(Name = "Tags", Description = "Separated by comma.")]
 		public List<Tag> Tags { get; set; }
+
+
 	}
 }
