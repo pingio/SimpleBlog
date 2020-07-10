@@ -26,11 +26,13 @@ namespace SimpleBlog.Pages
 		}
 
 		public List<Post> PreviousPosts { get; set; }
+		public List<Tag> Tags { get; set; }
 
 		public void OnGet()
 		{
 			using var context = new BlogContext(_config);
 			PreviousPosts = context.Posts.Include(post => post.Tags).ToList();
+			Tags = context.Tags.ToList();
 
 		}
 	}

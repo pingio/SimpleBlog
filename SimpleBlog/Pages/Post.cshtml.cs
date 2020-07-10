@@ -20,11 +20,15 @@ namespace SimpleBlog.Pages
             _config = config;
 		}
         public Post Post { get; set; }
-        public void OnGet(int id)
+
+		public List<Tag> Tags { get; set; }
+
+		public void OnGet(int id)
         {
             using var context = new BlogContext(_config);
             Post = context.Posts.Include(post => post.Tags).FirstOrDefault(post => post.PostId == id);
+			Tags = context.Tags.ToList();
 
-        }
+		}
     }
 }
