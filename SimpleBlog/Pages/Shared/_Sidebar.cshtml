@@ -10,12 +10,10 @@
 	<div class="card my-4 bg-dark text-white">
 		<h5 class="card-header">Search</h5>
 		<div class="card-body">
-			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search for...">
-				<span class="input-group-btn">
-					<button class="btn btn-secondary" type="button">Go!</button>
-				</span>
-			</div>
+			<form action="/Search/Search" method="get">
+				<input name="query" class="form-control" type="text" placeholder="Search" aria-label="Search" required>
+				<button class="btn form-control" type="submit">Click Me</button>
+			</form>
 		</div>
 	</div>
 
@@ -30,7 +28,7 @@
 						@foreach (var tag in Model.Tags)
 						{
 							<li>
-								<a asp-page="Search" asp-route-search="tag" asp-route-query="@tag.TagName">@tag.TagName</a>
+								<a asp-page="/Search/Tag" asp-route-query="@tag.TagName">@tag.TagName</a>
 							</li>
 						}
 

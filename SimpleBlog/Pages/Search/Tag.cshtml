@@ -1,7 +1,7 @@
-﻿@page "{search}/{query}"
-@model SimpleBlog.Pages.SearchModel
+﻿@page "{query}"
+@model SimpleBlog.Pages.Search.TagModel
 @{
-	ViewData["Title"] = "Search - @query";
+	ViewData["Title"] = "Search - " + Model.Query;
 }
 
 
